@@ -14,11 +14,21 @@ export function MainNav({
 
   const routes = [
     {
+      href: `/${params.storeId}`,
+      label: "Dashboard",
+      active: pathname === `/${params.storeId}`,
+    },
+    {
+      href: `/${params.storeId}/banners`,
+      label: "Banners",
+      active: pathname === `/${params.storeId}/banner`,
+    },
+    {
       href: `/${params.storeId}/settings`,
-      label: 'Settings',
+      label: "Settings",
       active: pathname === `/${params.storeId}/settings`,
-    }
-  ]
+    },
+  ];
   return (
     <nav className={cn(
       "flex items-center space-x-4 lg:space-x-6",
