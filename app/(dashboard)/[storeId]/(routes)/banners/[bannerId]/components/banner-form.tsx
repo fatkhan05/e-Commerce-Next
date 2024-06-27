@@ -18,6 +18,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { AlertModal } from '@/components/modals/alert-modal';
 import { ApiAlert } from '@/components/ui/api-alert';
 import { useOrigin } from '@/hooks/user-origin';
+import ImageUpload from '@/components/ui/image-upload';
 
 interface BannerFormProps {
   initialData: Banner | null;
@@ -43,22 +44,27 @@ export const BannerForm: React.FC<BannerFormProps> = ({
   
   const title = initialData ? "Edit Banner" : "Buat Banner"
   const description = initialData ? "Edit Banner Toko" : "Buat Banner Toko"
-  const toastMessage = initialData ? "Berhasil diedit" : "Banner berhasil dibuat"
-  const action = initialData ? "Simpan" : "Buat"
+  const toastMessage = initialData ? "Banner Berhasil diedit" : "Banner berhasil dibuat";
+  const action = initialData ? "Simpan" : "Buat Baru"
   const form = useForm<BannerFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       label: '',
       imageUrl: ''
-    }
+    } 
   })
 
   const onSubmit = async (data: BannerFormValues) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/stores/${params.storeId}`, data)
+      if (initialData) {
+        await axios.patch(`/api/${params.storeId}/banners/${params.bannerId}`, data);
+      } else {
+        await axios.post(`/api/${params.storeId}/banners`, data);
+      }
       router.refresh()
-      toast.success("Toko berhasil diupdate")
+      router.push(`/${params.storeId}/banners`)
+      toast.success(toastMessage)
     } catch (error) {
       toast.error("Cek kembali data yang diinput")
     } finally {
@@ -69,10 +75,10 @@ export const BannerForm: React.FC<BannerFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/stores/${params.storeId}`)
+      await axios.delete(`/api/${params.storeId}/banners/${params.bannerId}`)
       router.refresh()
-      router.push('/')
-      toast.success("Toko berhasil dihapus")
+      router.push(`/${params.storeId}/banners`);
+      toast.success("Banner berhasil dihapus")
     } catch (error) {
       toast.error("Cek kembali data dan koneksi anda")
     } finally {
@@ -96,32 +102,56 @@ export const BannerForm: React.FC<BannerFormProps> = ({
             disabled={loading}
             variant="destructive"
             size="sm"
-            onClick={() => setOpen(true)}>
+            onClick={() => setOpen(true)}
+          >
             <Trash className="h-4 w-4" />
           </Button>
         )}
       </div>
       <Separator />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 w-full'>
-          <div className='grid grid-cols-3 gap-8'>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 w-full"
+        >
+          <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
               name="label"
               render={({ field }) => (
                 <FormItem>
-                <FormLabel>Label</FormLabel>
+                  <FormLabel>Label</FormLabel>
                   <FormControl>
-                    <Input placeholder='Label Banner' disabled={loading} {...field} />
+                    <Input
+                      placeholder="Label Banner"
+                      disabled={loading}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
-              </FormItem>
-              )}/>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      disabled={loading}
+                      onChange={(url) => field.onChange(url)}
+                      onRemove={() => field.onChange('')}
+                      value={field.value ? [field.value] : []}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-          <Button
-            disabled={loading}
-            type='submit'
-          >
+          <Button disabled={loading} type="submit">
             {action}
           </Button>
         </form>
