@@ -64,6 +64,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       } else {
         await axios.post(`/api/${params.storeId}/categories`, data);
       }
+      // window.location.reload();
       router.refresh()
       router.push(`/${params.storeId}/categories`)
       toast.success(toastMessage)
@@ -77,7 +78,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/${params.storeId}/categories/${params.catrgoryId}`)
+      await axios.delete(`/api/${params.storeId}/categories/${params.categoryId}`)
+      // window.location.reload();
       router.refresh()
       router.push(`/${params.storeId}/categories`);
       toast.success("Kategori berhasil dihapus")

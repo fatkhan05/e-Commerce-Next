@@ -44,7 +44,6 @@ export async function POST(req: Request,
         name,
         bannerId,
         storeId: params.storeId,
-        // updatedAt: new Date(),
       },
     });
 
@@ -74,7 +73,7 @@ export async function GET(
 
     return NextResponse.json(categories);
   } catch (error) {
-    console.log("[CATEGORIES_POST", error);
+    console.log("[CATEGORIES_GET", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
