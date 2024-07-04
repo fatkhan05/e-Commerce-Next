@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ModalProvider } from "@/providers/modal-provider";
 import { ToasterProvider } from "@/providers/toast-provider";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,15 @@ export default function RootLayout({
           <ToasterProvider />
           <ModalProvider />
           {children}
+          <Carousel>
+            <CarouselContent>
+              <CarouselItem className="basis-1/3">item</CarouselItem>
+              <CarouselItem className="basis-1/3">item</CarouselItem>
+              <CarouselItem className="basis-1/3">item</CarouselItem>
+              <CarouselNext />
+              <CarouselPrevious />
+            </CarouselContent>
+          </Carousel>
         </body>
       </html>
     </ClerkProvider>

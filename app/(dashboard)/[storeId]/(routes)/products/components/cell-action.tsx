@@ -2,7 +2,7 @@
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import axios from 'axios'
-import { BannerColumn } from "./columns"
+import { ProductColumn } from "./columns"
 import { Button } from "@/components/ui/button";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { AlertModal } from "@/components/modals/alert-modal";
 
 interface CellActionProps {
-  data: BannerColumn
+  data: ProductColumn
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -22,16 +22,16 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success("Banner Id disalin ke clipboard");
+    toast.success("Id produk disalin ke clipboard");
   };
 
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/banners/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/products/${data.id}`);
       router.refresh();
-      router.push(`/${params.storeId}/banners`);
-      toast.success("Banner berhasil dihapus");
+      router.push(`/${params.storeId}/products`);
+      toast.success("Produk berhasil dihapus");
     } catch (error) {
       toast.error("Cek kembali data dan koneksi anda");
     } finally {
@@ -61,7 +61,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             <Copy className="mr-2 h-4 w-4" />
             Copy Id
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/banners/${data.id}`)}>
+          <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/products/${data.id}`)}>
             <Edit className="mr-2 h-4 w-4" />
             Edit
           </DropdownMenuItem>
