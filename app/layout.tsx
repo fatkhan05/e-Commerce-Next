@@ -26,15 +26,6 @@ export default function RootLayout({
           <ToasterProvider />
           <ModalProvider />
           {children}
-          <Carousel>
-            <CarouselContent>
-              <CarouselItem className="basis-1/3">item</CarouselItem>
-              <CarouselItem className="basis-1/3">item</CarouselItem>
-              <CarouselItem className="basis-1/3">item</CarouselItem>
-              <CarouselNext />
-              <CarouselPrevious />
-            </CarouselContent>
-          </Carousel>
         </body>
       </html>
     </ClerkProvider>
