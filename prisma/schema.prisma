@@ -59,6 +59,7 @@ model Product {
   store       Store @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId  String
   category    Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  cart        Cart[]
   name        String 
   price       Decimal
   isFeatured  Boolean @default(false)
@@ -76,6 +77,18 @@ model Image {
   productId   String
   product     Product @relation(fields: [productId], references: [id], onDelete: Cascade )
   url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Cart {
+  id          String @unique @default(uuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade )
+  price       Decimal
+  quantity    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
